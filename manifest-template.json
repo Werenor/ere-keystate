@@ -1,0 +1,34 @@
+{
+  "id": "ere-keystate",
+  "source": "github",
+  "repository": "Werenor/ere-keystate",
+  "version": "1.1.0",
+  "main": ".webpack/main/index.js",
+  "prepend": "const __ereKeyState = require(\"./keystate.cjs\");\n",
+  "replacements": [
+    {
+      "find": "setTrigger(e){this.era.connect(\"setTrigger\",e)}",
+      "replace": "enableKeyState(e){return __ereKeyState.enable(e)}getKeyState(e){return __ereKeyState.read(e)}disableKeyState(){return __ereKeyState.disable()}setTrigger(e){this.era.connect(\"setTrigger\",e)}"
+    },
+    {
+      "find": "resetParams(){this.inputKey&&",
+      "replace": "resetParams(){__ereKeyState.disable(\"engine-reset\");this.inputKey&&"
+    },
+    {
+      "find": "e.on(\"resize\",()=>e.webContents.send(\"engine\",{action:N.resize,arg:e.getContentSize()[1]}));",
+      "replace": "__ereKeyState.attach(e);e.on(\"resize\",()=>e.webContents.send(\"engine\",{action:N.resize,arg:e.getContentSize()[1]}));"
+    }
+  ],
+  "files": [
+    {
+      "source": "keystate.cjs",
+      "target": ".webpack/main/keystate.cjs",
+      "external": false
+    },
+    {
+      "source": "KeyStateProbe.exe",
+      "target": "resources/KeyStateProbe.exe",
+      "external": true
+    }
+  ]
+}

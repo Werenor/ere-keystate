@@ -1,0 +1,36 @@
+{
+  "id": "ere-keystate",
+  "source": "github",
+  "repository": "Werenor/ere-keystate",
+  "version": "1.1.0",
+  "main": ".webpack/main/index.js",
+  "prepend": "const __ereKeyState = require(\"./keystate.cjs\");\n",
+  "replacements": [
+    {
+      "find": "setTrigger(e){this.era.connect(\"setTrigger\",e)}",
+      "replace": "enableKeyState(e){return __ereKeyState.enable(e)}getKeyState(e){return __ereKeyState.read(e)}disableKeyState(){return __ereKeyState.disable()}setTrigger(e){this.era.connect(\"setTrigger\",e)}"
+    },
+    {
+      "find": "resetParams(){this.inputKey&&",
+      "replace": "resetParams(){__ereKeyState.disable(\"engine-reset\");this.inputKey&&"
+    },
+    {
+      "find": "e.on(\"resize\",()=>e.webContents.send(\"engine\",{action:N.resize,arg:e.getContentSize()[1]}));",
+      "replace": "__ereKeyState.attach(e);e.on(\"resize\",()=>e.webContents.send(\"engine\",{action:N.resize,arg:e.getContentSize()[1]}));"
+    }
+  ],
+  "files": [
+    {
+      "source": "keystate.cjs",
+      "target": ".webpack/main/keystate.cjs",
+      "external": false,
+      "sha256": "9cb5f9d64476cf75eccb37a6ef4b15974ccdc783e9fca659aa1df6775cd39864"
+    },
+    {
+      "source": "KeyStateProbe.exe",
+      "target": "resources/KeyStateProbe.exe",
+      "external": true,
+      "sha256": "96d8bc9fbbe8f4f3457229f836100815bcef57172d636ffbdce379d8f58b6f24"
+    }
+  ]
+}
